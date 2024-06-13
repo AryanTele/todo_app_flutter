@@ -16,6 +16,9 @@ class _HomePageState extends State<HomePage> {
     ["Do Exercise", false],
   ];
 
+  // text controller
+  final _controller = TextEditingController();
+
   // changes checkbox state
   void checkBoxChanged(bool? value, int index) {
     setState(() {
@@ -28,7 +31,9 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) {
-        return DialogBox();
+        return DialogBox(
+          controller: _controller,
+        );
       },
     );
   }
