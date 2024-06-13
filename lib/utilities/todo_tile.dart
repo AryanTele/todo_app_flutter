@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 class ToDoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
-
   Function(bool?)? onChanged;
+  VoidCallback onPressed;
 
   ToDoTile({
     super.key,
     required this.taskName,
     required this.taskCompleted,
     required this.onChanged,
+    required this.onPressed,
   });
+
+  void deleteTask(int index) {}
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,13 @@ class ToDoTile extends StatelessWidget {
                       ? TextDecoration.lineThrough
                       : TextDecoration.none),
             ),
+            IconButton(
+                onPressed: onPressed,
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.grey,
+                  size: 23,
+                ))
           ],
         ),
       ),
