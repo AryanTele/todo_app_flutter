@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:todo_app/data/database.dart';
 import 'package:todo_app/utilities/dialog_box.dart';
 import 'package:todo_app/utilities/todo_tile.dart';
 
@@ -10,11 +12,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // refernce the hive box
+  final _myBox = Hive.openBox('myBox');
+
   // List of task
-  final List toDoList = [
-    ["Make Tutorials", false],
-    ["Do Exercise", false],
-  ];
+  ToDoDatabase db = ToDoDatabase();
 
   // text controller
   final _controller = TextEditingController();
@@ -22,14 +24,14 @@ class _HomePageState extends State<HomePage> {
   // changes checkbox state
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      toDoList[index][1] = !toDoList[index][1];
+      db.toDoList[index][1] = !db.toDoList[index][1];
     });
   }
 
   //void save new task
   void saveNewTask() {
     setState(() {
-      toDoList.add([_controller.text, false]);
+      db.toDoList.add([_controller.text, false]);
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   void deleteTask(int index) {
     setState(() {
-      toDoList.removeAt(index);
+      db.toDoList.removeAt(index);
     });
   }
 
@@ -76,11 +78,11 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.black,
         ),
         body: ListView.builder(
-          itemCount: toDoList.length,
+          itemCount: db.toDoList.length,
           itemBuilder: (context, index) {
             return ToDoTile(
-              taskName: toDoList[index][0],
-              taskCompleted: toDoList[index][1],
+              taskName: db.toDoList[index][0],
+              taskCompleted: db.toDoList[index][1],
               onChanged: (value) => checkBoxChanged(value, index),
               onPressed: () {
                 deleteTask(index);
